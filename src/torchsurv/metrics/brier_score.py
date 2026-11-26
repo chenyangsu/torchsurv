@@ -108,7 +108,7 @@ class BrierScore:
 
             .. math::
 
-                \hat{BS}(t) = \frac{1}{n}\sum_i 1(T_i \leq t, \delta_i = 1) (0 - \hat{S}_i(t))^2 + 1(T_1 > t) (1- \hat{S}_i(t))^2
+                \hat{BS}(t) = \frac{1}{n}\sum_i \left[ 1(T_i \leq t, \delta_i = 1) (0 - \hat{S}_i(t))^2 + 1(T_i > t) (1- \hat{S}_i(t))^2 \right]
 
             To account for the fact that the event time are censored, the
             inverse probability weighting technique can be used. In this context,
@@ -119,7 +119,7 @@ class BrierScore:
 
             .. math::
 
-                \hat{BS}(t) = \frac{1}{n}\sum_i \omega(T_i) 1(T_i \leq t, \delta_i = 1) (0 - \hat{S}_i(t))^2 + \omega(t) 1(T_1 > t) (1- \hat{S}_i(t))^2
+                \hat{BS}(t) = \frac{1}{n}\sum_i \left[ \omega(T_i) 1(T_i \leq t, \delta_i = 1) (0 - \hat{S}_i(t))^2 + \omega(t) 1(T_i > t) (1- \hat{S}_i(t))^2 \right]
 
             The censoring-adjusted Brier score can be obtained by specifying the argument
             ``weight``, the weights evaluated at each ``time`` (:math:`\omega(T_1), \cdots, \omega(T_N)`).
@@ -236,16 +236,17 @@ class BrierScore:
         Note:
 
             The integrated Brier score is the integral of the time-dependent Brier score over the interval
-            :math:`[t_1, t_2]`, where :math:`t_1 = \min\left(\{T_i\}_{i = 1, \cdots, N}\right)` and :math:`t_2 = \max\left(\{T_i\}_{i = 1, \cdots, N}\right)`.
+            :math:`[t_1, t_2]`, where :math:`t_1` and :math:`t_2` are the first and last time points in ``new_time``
+            (by default, :math:`t_1 = \min\left(\{T_i\}_{i = 1, \cdots, N}\right)` and :math:`t_2 = \max\left(\{T_i\}_{i = 1, \cdots, N}\right)`).
             It is defined by :cite:p:`Graf1999`
 
             .. math::
 
                     \hat{IBS} = \int_{t_1}^{t_2} \hat{BS}(t) dW(t)
 
-            where :math:`W(t) = t / t_2`.
+            where :math:`W(t) = (t - t_1) / (t_2 - t_1)`.
 
-            The integral is estimated with the trapzoidal rule.
+            The integral is estimated with the trapezoidal rule.
 
         """
         assert self.new_time is not None

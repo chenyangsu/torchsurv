@@ -41,6 +41,7 @@ Version 0.2.0
 * Added GOVERNANCE.md, CODEOWNERS, and release info for PyTorch Ecosystem compliance (#156)
 * Updated README with versioning, compatibility, and changelog links (#156)
 * Fixed URL typos and broken links (#150)
+* Corrected the integrated Brier score formula in ``BrierScore.integral`` to match the code, which divides by ``t_2 - t_1``, and the ``T_1`` typo in the Brier score formulas
 * Added package overview docs and non-medical applications notebook (#148)
 
 Version 0.1.6
